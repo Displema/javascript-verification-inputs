@@ -1,5 +1,40 @@
 const form = document.querySelector('[name="verify"]');
 const inputs = form.querySelectorAll('.inputs input');
+const button = document.querySelector('[type="submit"]');
+
+function checkCode() {
+  let key = ""
+  inputs.forEach(input => {
+    key += input.value.toString()
+  })
+  if (key == "123456") {
+    alert('Access granted')
+  }  
+}
+function handleBackspace(e) {
+  // support for backspacing from 1 input to another
+  const key = e.key
+  const input = e.target
+  if(key === "Backspace" && input.previousElementSibling) {
+    input.previousElementSibling.select()
+  }
+}
+
+function submitCode(e) {
+  // Auto submit the form if all fields are filled after a paste
+  inputs.forEach( (input) => {
+    if(!input.value) {
+      return false
+    }
+  })
+  button.click()
+}
+
+function selectText(e) {
+  // select the text when the next input is focused
+  const input = e.target
+  input.nextElementSibling && input.nextElementSibling.value ? input.nextElementSibling.select() : ''
+}
 
 function handleInput(e) {
   // check for data that was inputtted and if there is a next input, focus it
@@ -19,9 +54,9 @@ function handlePaste(e) {
 }
 
 inputs[0].addEventListener('paste', handlePaste);
-
+inputs[5].addEventListener('input', submitCode)
 form.addEventListener('input', handleInput);
-
-// 1. select the text when the next input is focued
-// 2. Auto submit the form if all fields are filled after a paste
-// 3. support for backspacing from 1 input to another
+form.addEventListener('input', selectText)
+inputs.forEach((input) => {
+  input.addEventListener('keydown', handleBackspace)
+})
