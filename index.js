@@ -2,6 +2,10 @@ const form = document.querySelector('[name="verify"]');
 const inputs = form.querySelectorAll('.inputs input');
 const button = document.querySelector('[type="submit"]');
 
+window.onload = function() {
+  form.reset()
+}
+
 function checkCode() {
   let key = ""
   inputs.forEach(input => {
@@ -9,7 +13,10 @@ function checkCode() {
   })
   if (key == "123456") {
     alert('Access granted')
-  }  
+  } else {
+    alert('Try again')
+    location.reload()
+  }
 }
 function handleBackspace(e) {
   // support for backspacing from 1 input to another
